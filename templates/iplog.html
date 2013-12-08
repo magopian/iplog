@@ -1,0 +1,33 @@
+<!doctype html>
+<head>
+  <title>IP logs</title>
+</head>
+
+<body>
+  <h1>IP logs</h1>
+
+  <h1>Your IP</h1>
+
+  <p>{{ now.strftime('%Y-%m-%d %H:%M:%S') }} - <strong>{{ request.remote_addr }}</strong>
+     <a href="?store=true" id="store-link">store</a>
+  </p>
+
+  <h2>Past stored IPs</h2>
+
+  <ul>
+    {% for log in logs %}
+      <li>{{ log['timestamp'] }} - <strong>{{ log['ip'] }}</strong>{% if log['note'] %} ({{ log['note'] }}){% endif %}</li>
+    {% endfor %}
+  </ul>
+
+  <script>
+    function store(evt) {
+      evt.preventDefault();
+
+      note = window.prompt('What additional message do you want to store?');
+      window.location = this.href + '&note=' + note;
+    }
+
+    document.getElementById('store-link').addEventListener( 'click', store, false);
+  </script>
+</body>
